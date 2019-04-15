@@ -1,0 +1,102 @@
+%% rulerbox.tex
+%% Copyright 2019 Yuchang Yang < yang.yc.allium@gmail.com >
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Yuchang Yang.
+%
+% This work consists of the files rulerbox.sty, rulerbox.tex and 
+% the generated manual file rulerbox.pdf.
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{rulerbox}
+\usepackage{fontspec}
+\usepackage{color}
+\definecolor{darkmiku}{RGB}{19, 149, 139}
+
+\newdimen\sidelength
+	\sidelength=2cm
+\newdimen\boxkern
+	\boxkern=2mm
+\newdimen\mydimen
+\mydimen=\sidelength
+\advance\mydimen-.8pt
+
+\def\lan{\ensuremath{\langle}}
+\def\ran{\ensuremath{\rangle}}
+\def\param#1{\textrm{\lan\textit{#1}\ran}}
+\def\texttt#1{{\ttfamily\color{darkmiku}#1}}
+\def\cbox#1{\rulerbox[#1]{\ooalign{%
+	\rule{\sidelength}{\sidelength}\cr
+	\hidewidth\raisebox{.4pt}{\color{white}\rule{\mydimen}{\mydimen}}\hidewidth\cr
+	\hidewidth\vbox to \sidelength{\vss\hbox to \sidelength{\hss\texttt{[#1]}\hss}\vss}\hidewidth\cr
+	}}}
+
+\title{\hspace*{1cm}The \textsf{rulerbox} package\footnotemark[1]\hspace*{1cm}}
+\author{Yuchang \textsc{Yang}{\fontspec{SimSun}（杨宇昌）\kern-5pt\footnotemark[2]}}
+\date{April 15\textsuperscript{th}, 2019\qquad ver.~1.0}
+
+\begin{document}
+
+\parskip=1ex
+
+\begin{centering}
+	\vspace*{-2em}
+	\rulersep=5pt
+	\rulerwidth=5mm
+	\let\newpage\relax
+	\rulerbox{\parbox{.7\linewidth}{\vspace*{-2em}\maketitle\vspace*{-1.5em}}}\par
+	\vskip2em
+	\def\thefootnote{\fnsymbol{footnote}}
+	\footnotetext[1]{Github repository: \texttt{https://github.com/Mikumikunisiteageru/rulerbox}}
+	\footnotetext[2]{Email address: \texttt{yang.yc.allium@gmail.com}}
+\end{centering}
+
+\section{Introduction}
+	\textsf{rulerbox} is a \LaTeX\ package providing macro \texttt{\string\rulerbox}, which draws rulers along edges of an object, in the following style:\par
+	\vskip-1mm
+	\centerline{{\rulersep=-.4pt\rulerwidth=5mm\rulerbox[b]{\rule{10cm}{0pt}}}}
+	
+\section{Usage}
+
+\subsection{Basic syntax}
+	\texttt{\string\rulerbox\{\param{content}\}} somewhat resembles the macro \texttt{\string\fbox\{\param{content}\}} defined by \LaTeX. The one mandatory parameter that both of them receive are the content to be wrapped inside a box. Then \texttt{\string\rulerbox} decorates the box edges with rulers, whereas \texttt{\string\fbox} frames the box by line segments. The original depth are preserved in a similar way; in other words, neither of these macros affects the baseline.\par
+	\medskip
+	\centerline{\fontsize{50}{50}\selectfont ra\rulerbox{g}ge\fbox{d}ri\fbox{g}\rulerbox{h}t}
+
+\subsection{Edge selection}
+	\texttt{\string\rulerbox[\param{edges}]\{\param{content}\}} also accepts an optional parameter, telling \LaTeX{} which edges to be decorated with rulers. {\color{darkmiku}\param{edges}} is any subset of \texttt{t}, \texttt{b}, \texttt{l}, and \texttt{r}, controlling the top, bottom, left, and right edges respectively. So \texttt{\string\rulerbox[tblr]\{\param{content}\}} behaves identically the same as \texttt{\string\rulerbox\{\param{content}\}} (unless default switches are turned off, see below), while \texttt{\string\rulerbox[]\{\param{content}\}} regresses to \texttt{\string\hbox\{\param{content}\}}.\par
+	\medskip	
+	\centerline{\vbox{%
+		\hbox{\cbox{tl}\kern\boxkern\cbox{t}\kern\boxkern\cbox{tr}}%
+		\nointerlineskip\kern\boxkern
+		\hbox{\cbox{l}\kern\boxkern\cbox{}\kern\boxkern\cbox{r}}%
+		\nointerlineskip\kern\boxkern
+		\hbox{\cbox{bl}\kern\boxkern\cbox{b}\kern\boxkern\cbox{br}}%
+		}}
+	\smallskip
+	Default status of each edge can be set seperately and globally by switching \texttt{\textbackslash ifrulertop}, \texttt{\textbackslash ifrulerbottom}, \texttt{\textbackslash ifrulerleft}, and \texttt{\textbackslash ifrulerright}. For example, \texttt{\string\rulerleftfalse} suppresses all left rulers (except required explicitly by the optional parameter), until a \texttt{\string\rulerlefttrue} is seen.\par  
+	
+\subsection{Dimensions}
+	Four dimensions are involved in the \textsf{rulerbox} package:
+		\begin{itemize}
+			\item \texttt{\string\rulerunit}: The least count of rulers, \textit{i.e.}\ distance between adjacent ticks in rulers. Default is \texttt{1mm}, one millimetre, which produces rulers of metric length system. \texttt{\string\rulerunit} may be redefined to adapt to other \textsl{decimal} length systems, or draw rulers of relative scales.\par
+			For example, if one want to switch to Chinese length units, he may define \texttt{\string\rulerunit=1cm\string\divide\string\rulerunit3\string\relax}, which makes the least count 10/3 mm, namely one \textit{fen}{\fontspec{SimSun}（分）}\kern-4pt, or one tenth \textit{cun}{\fontspec{SimSun}（寸）}\kern-4pt.\par
+			\vskip-6mm
+			\hbox{}\hfill{\rulerunit=1cm\divide\rulerunit3\relax\rulersep=-6pt\rulerwidth=5mm\rulerbox[b]{\rule{10cm}{0pt}}}\hfill\hbox{}\par
+			\vskip1mm
+			\item \texttt{\string\rulersep}: Distance between box edges and rulers. Default is \texttt{3pt}.
+			\item \texttt{\string\rulerwidth}: Length of longest ticks in rulers. Default is \texttt{7pt}.
+			\item \texttt{\string\rtickrule}: Width of ticks in rulers. Default is \texttt{0.4pt}.
+		\end{itemize}
+		
+\end{document}
