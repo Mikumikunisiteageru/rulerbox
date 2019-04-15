@@ -7,5 +7,5 @@ rulerbox is a LaTeX package providing macro `\rulerbox`, which draws rulers alon
 
 ## Usage
 
-The basic syntax is `\rulerbox[<edges>]{<content>}`, where <edges> is any subset of `t` (top), `b` (bottom), `l` (left), and `r` (right), whose default is `tblr`.
+The basic syntax is `\rulerbox{<content>}` or `\rulerbox[<edges>]{<content>}`, where `<edges>` is any subset of `t` (top), `b` (bottom), `l` (left), and `r` (right). The default `<edge>` is `tblr`.
 
