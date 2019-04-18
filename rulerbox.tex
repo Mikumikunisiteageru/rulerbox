@@ -43,7 +43,7 @@
 
 \title{\hspace*{1cm}The \textsf{rulerbox} package\footnotemark[1]\hspace*{1cm}}
 \author{Yuchang \textsc{Yang}{\fontspec{SimSun}（杨宇昌）\kern-5pt\footnotemark[2]}}
-\date{April 15\textsuperscript{th}, 2019\qquad ver.~1.0}
+\date{April 18\textsuperscript{th}, 2019\qquad ver.~1.01}
 
 \begin{document}
 
@@ -55,26 +55,28 @@
 	\rulerwidth=5mm
 	\let\newpage\relax
 	\rulerbox{\parbox{.7\linewidth}{\vspace*{-2em}\maketitle\vspace*{-1.5em}}}\par
-	\vskip2em
+	\vskip1.5em
 	\def\thefootnote{\fnsymbol{footnote}}
 	\footnotetext[1]{Github repository: \texttt{https://github.com/Mikumikunisiteageru/rulerbox}}
 	\footnotetext[2]{Email address: \texttt{yang.yc.allium@gmail.com}}
 \end{centering}
 
 \section{Introduction}
-	\textsf{rulerbox} is a \LaTeX\ package providing macro \texttt{\string\rulerbox}, which draws rulers along edges of an object, in the following style:\par
+	\textsf{rulerbox} is an independent \LaTeX\ package providing macro \texttt{\string\rulerbox}, which draws rulers along edges of an object, in the following style:\par
 	\vskip-1mm
 	\centerline{{\rulersep=-.4pt\rulerwidth=5mm\rulerbox[b]{\rule{10cm}{0pt}}}}
+	\smallskip
+	This might be useful when showing the absolute size of something in electronic documents, or designating the relative scale in printed materials.
 	
 \section{Usage}
 
-\subsection{Basic syntax}
-	\texttt{\string\rulerbox\{\param{content}\}} somewhat resembles the macro \texttt{\string\fbox\{\param{content}\}} defined by \LaTeX. The one mandatory parameter that both of them receive are the content to be wrapped inside a box. Then \texttt{\string\rulerbox} decorates the box edges with rulers, whereas \texttt{\string\fbox} frames the box by line segments. The original depth are preserved in a similar way; in other words, neither of these macros affects the baseline.\par
+% \subsection{Basic syntax}
+	\texttt{\string\rulerbox\{\param{content}\}} somewhat resembles the macro \texttt{\string\fbox\{\param{content}\}} defined by \LaTeX. The one mandatory parameter that they receive is the content to be wrapped inside a box. Then \texttt{\string\rulerbox} decorates the box edges with rulers, whereas \texttt{\string\fbox} frames the box by solid lines. Neither of them affects the vertical alignment.\par
 	\medskip
 	\centerline{\fontsize{50}{50}\selectfont ra\rulerbox{g}ge\fbox{d}ri\fbox{g}\rulerbox{h}t}
-
+	
 \subsection{Edge selection}
-	\texttt{\string\rulerbox[\param{edges}]\{\param{content}\}} also accepts an optional parameter, telling \LaTeX{} which edges to be decorated with rulers. {\color{darkmiku}\param{edges}} is any subset of \texttt{t}, \texttt{b}, \texttt{l}, and \texttt{r}, controlling the top, bottom, left, and right edges respectively. So \texttt{\string\rulerbox[tblr]\{\param{content}\}} behaves identically the same as \texttt{\string\rulerbox\{\param{content}\}} (unless default switches are turned off, see below), while \texttt{\string\rulerbox[]\{\param{content}\}} regresses to \texttt{\string\hbox\{\param{content}\}}.\par
+	\texttt{\string\rulerbox[\param{edges}]\{\param{content}\}} also accepts an optional parameter, telling \LaTeX{} which edges to be decorated with rulers. \texttt{\param{edges}} is any subset of \texttt{t}, \texttt{b}, \texttt{l}, and \texttt{r}, controlling the top, bottom, left, and right edges respectively. So \texttt{\string\rulerbox[tblr]\{\param{content}\}} behaves identically the same as \texttt{\string\rulerbox\{\param{content}\}} (unless default switches are turned off, see below), while \texttt{\string\rulerbox[]\{\param{content}\}} regresses to \texttt{\string\hbox\{\param{content}\}}.\par
 	\medskip	
 	\centerline{\vbox{%
 		\hbox{\cbox{tl}\kern\boxkern\cbox{t}\kern\boxkern\cbox{tr}}%
@@ -84,19 +86,19 @@
 		\hbox{\cbox{bl}\kern\boxkern\cbox{b}\kern\boxkern\cbox{br}}%
 		}}
 	\smallskip
-	Default status of each edge can be set seperately and globally by switching \texttt{\textbackslash ifrulertop}, \texttt{\textbackslash ifrulerbottom}, \texttt{\textbackslash ifrulerleft}, and \texttt{\textbackslash ifrulerright}. For example, \texttt{\string\rulerleftfalse} suppresses all left rulers (except required explicitly by the optional parameter), until a \texttt{\string\rulerlefttrue} is seen.\par  
+	Default status of each edge can be set separately and globally by switching \texttt{\textbackslash ifrulertop}, \texttt{\textbackslash ifrulerbottom}, \texttt{\textbackslash ifrulerleft}, and \texttt{\textbackslash ifrulerright}. For example, \texttt{\string\rulerleftfalse} suppresses all left rulers (except required explicitly by \texttt{\param{edges}}), until a \texttt{\string\rulerlefttrue} is seen.\par  
 	
 \subsection{Dimensions}
-	Four dimensions are involved in the \textsf{rulerbox} package:
+	Four dimensions are involved in the \textsf{rulerbox} package. They can be redefined locally by \texttt{\param{dimen name}=\param{dimen express}\string\relax} in \TeX\ style, or globally by \texttt{\string\setlength\{\param{dimen name}\}\{\param{dimen express}\}} in \LaTeX\ style.
 		\begin{itemize}
-			\item \texttt{\string\rulerunit}: The least count of rulers, \textit{i.e.}\ distance between adjacent ticks in rulers. Default is \texttt{1mm}, one millimetre, which produces rulers of metric length system. \texttt{\string\rulerunit} may be redefined to adapt to other \textsl{decimal} length systems, or draw rulers of relative scales.\par
-			For example, if one want to switch to Chinese length units, he may define \texttt{\string\rulerunit=1cm\string\divide\string\rulerunit3\string\relax}, which makes the least count 10/3 mm, namely one \textit{fen}{\fontspec{SimSun}（分）}\kern-4pt, or one tenth \textit{cun}{\fontspec{SimSun}（寸）}\kern-4pt.\par
+			\item \texttt{\string\rulerunit}: The \textsl{least count} of rulers, \textit{i.e.}\ distance between adjacent ticks in rulers. Default is \texttt{1mm}, one millimetre, which produces rulers of metric length system. \texttt{\string\rulerunit} may be redefined to adapt to other \textsl{decimal} length systems, or draw rulers of relative scales.\par
+			For example, if one wants to switch to Chinese length units, he may define \texttt{\string\rulerunit=1cm\string\divide\string\rulerunit3\string\relax}, which makes the least count 10/3 mm, namely one \textit{fen}{\fontspec{SimSun}（分）}\kern-4pt, or one tenth \textit{cun}{\fontspec{SimSun}（寸）}\kern-4pt.\par
 			\vskip-6mm
 			\hbox{}\hfill{\rulerunit=1cm\divide\rulerunit3\relax\rulersep=-6pt\rulerwidth=5mm\rulerbox[b]{\rule{10cm}{0pt}}}\hfill\hbox{}\par
-			\vskip1mm
+			\smallskip
 			\item \texttt{\string\rulersep}: Distance between box edges and rulers. Default is \texttt{3pt}.
 			\item \texttt{\string\rulerwidth}: Length of longest ticks in rulers. Default is \texttt{7pt}.
-			\item \texttt{\string\rtickrule}: Width of ticks in rulers. Default is \texttt{0.4pt}.
+			\item \texttt{\string\rtickrule}: Width of tick lines in rulers. Default is \texttt{0.4pt}.
 		\end{itemize}
 		
 \end{document}

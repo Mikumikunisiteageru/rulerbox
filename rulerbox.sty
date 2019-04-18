@@ -17,7 +17,7 @@
 % the generated manual file rulerbox.pdf.
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{rulerbox}[2019/04/15 v1 package rulerbox]
+\ProvidesPackage{rulerbox}[2019/04/18 v1.01 package rulerbox]
 \makeatletter
 \def\vb@xt@{\vbox to}
 \newdimen\rulerunit
@@ -89,34 +89,34 @@
     \ruler@box@
 }
 \def\rulers@prepare{%
-    \setbox\box@ruler@left=\hbox{\lower\dp\box@content\hbox{%
+    \ifruler@l\setbox\box@ruler@left=\hbox{\lower\dp\box@content\hbox{%
         \ooalign{%
                       \vb@xt@\dim@total@height{\ruler@vcells{10}{1.  }}\cr
             \hidewidth\vb@xt@\dim@total@height{\ruler@vcells{ 5}{ .75}}\cr
             \hidewidth\vb@xt@\dim@total@height{\ruler@vcells{ 1}{ .5 }}\cr
         }%
-    }}%
-    \setbox\box@ruler@right=\hbox{\lower\dp\box@content\hbox{%
+    }}\fi%
+    \ifruler@r\setbox\box@ruler@right=\hbox{\lower\dp\box@content\hbox{%
         \ooalign{%
             \vb@xt@\dim@total@height{\ruler@vcells{10}{1.  }}\cr
             \vb@xt@\dim@total@height{\ruler@vcells{ 5}{ .75}}\hidewidth\cr
             \vb@xt@\dim@total@height{\ruler@vcells{ 1}{ .5 }}\hidewidth\cr
         }%
-    }}%
-    \setbox\box@ruler@top=\hbox{%
+    }}\fi%
+    \ifruler@t\setbox\box@ruler@top=\hbox{%
         \ooalign{%
-			\hb@xt@\wd\box@content{\ruler@hcells{10}{1   }}\cr
-			\hb@xt@\wd\box@content{\ruler@hcells{ 5}{ .75}}\cr
-			\hb@xt@\wd\box@content{\ruler@hcells{ 1}{ .5 }}\cr
-		}%
-	}%
-    \setbox\box@ruler@bottom=\hbox{%
+            \hb@xt@\wd\box@content{\ruler@hcells{10}{1   }}\cr
+            \hb@xt@\wd\box@content{\ruler@hcells{ 5}{ .75}}\cr
+            \hb@xt@\wd\box@content{\ruler@hcells{ 1}{ .5 }}\cr
+        }%
+    }\fi%
+    \ifruler@b\setbox\box@ruler@bottom=\hbox{%
         \ooalign{%
-			\vb@xt@\rulerwidth{\hb@xt@\wd\box@content{\ruler@hcells{10}{1   }}\vss}\cr
-			\vb@xt@\rulerwidth{\hb@xt@\wd\box@content{\ruler@hcells{ 5}{ .75}}\vss}\cr
-			\vb@xt@\rulerwidth{\hb@xt@\wd\box@content{\ruler@hcells{ 1}{ .5 }}\vss}\cr
-		}%
-	}}
+            \vb@xt@\rulerwidth{\hb@xt@\wd\box@content{\ruler@hcells{10}{1   }}\vss}\cr
+            \vb@xt@\rulerwidth{\hb@xt@\wd\box@content{\ruler@hcells{ 5}{ .75}}\vss}\cr
+            \vb@xt@\rulerwidth{\hb@xt@\wd\box@content{\ruler@hcells{ 1}{ .5 }}\vss}\cr
+        }%
+    }\fi}
 \def\ruler@box@{%
     \lower\dim@depth\hbox{%
         \ifruler@l\kern\dim@margin\fi
